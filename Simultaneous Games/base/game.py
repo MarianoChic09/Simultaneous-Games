@@ -2,9 +2,13 @@ import copy
 from pettingzoo.utils import env
 from pettingzoo.utils.env import ParallelEnv
 
-ObsDict = env.ObsDict
-AgentID = env.AgentID
-ActionDict = env.ActionDict
+# ObsDict = env.ObsDict
+# AgentID = env.AgentID
+# ActionDict = env.ActionDict
+
+ActionDict = dict
+ObsDict = dict
+AgentID = dict
 
 class SimultaneousGame(ParallelEnv):
 

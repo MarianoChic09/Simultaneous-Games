@@ -1,8 +1,11 @@
 import numpy as np
 from numpy import ndarray
 from gymnasium.spaces import Discrete
-from pettingzoo.utils.env import ActionDict, ObsDict
+#from pettingzoo.utils.env import ActionDict, ObsDict
 from base.game import SimultaneousGame
+ActionDict = dict
+ObsDict = dict
+AgentID = dict
 
 class MP(SimultaneousGame):
 
@@ -21,6 +24,11 @@ class MP(SimultaneousGame):
             agent: Discrete(self._num_actions) for agent in self.agents
         }
 
+        # self.action_to_index = {
+        #     'H': 0,
+        #     'T': 1
+        # }
+
         # observations
         self.observation_spaces = {
             agent: ActionDict for agent in self.agents
@@ -28,7 +36,16 @@ class MP(SimultaneousGame):
 
     def step(self, actions: ActionDict) -> tuple[ObsDict, dict[str, float], dict[str, bool], dict[str, bool], dict[str, dict]]:
         # rewards
+        # (a0, a1) = tuple(map(lambda agent: self.action_to_index[actions[agent]], self.agents))
+
+        print("Actions:", actions)
+        print("self._R:", self._R)
+
         (a0, a1) = tuple(map(lambda agent: actions[agent], self.agents))
+
+        print("a0:", a0)
+        print("a1:", a1)
+
         r = self._R[a0][a1]
         self.rewards[self.agents[0]] = r
         self.rewards[self.agents[1]] = -r

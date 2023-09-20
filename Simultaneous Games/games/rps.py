@@ -1,8 +1,11 @@
 import numpy as np
 from numpy import ndarray
 from gymnasium.spaces import Discrete
-from pettingzoo.utils.env import ActionDict, ObsDict
+#from pettingzoo.utils.env import ActionDict, ObsDict
 from base.game import SimultaneousGame
+ActionDict = dict
+ObsDict = dict
+AgentID = dict
 
 class RPS(SimultaneousGame):
 
