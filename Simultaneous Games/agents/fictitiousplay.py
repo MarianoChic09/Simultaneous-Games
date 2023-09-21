@@ -15,12 +15,11 @@ class FictitiousPlay(Agent):
             self.count = initial
         else:
             for agent in game.agents:
-                self.count[agent] = np.random.randint(game.num_actions(agent))
+                self.count[agent] = np.random.randint(1,10,size=game.num_actions(agent))
 
         self.learned_policy: dict[AgentID, ndarray] = {}
         for agent in game.agents:
             self.learned_policy[agent] = self.count[agent] / np.sum(self.count[agent])
-
 
     def get_rewards(self) -> dict:
         g = self.game.clone()
@@ -35,7 +34,7 @@ class FictitiousPlay(Agent):
     def get_utility(self):
         rewards = self.get_rewards()
         utility = np.zeros(self.game.num_actions(self.agent))
-
+        
         # for action in range(self.game.num_actions(self.agent)):
         for joint_action in rewards.keys(): #product(*[range(self.game.num_actions(a)) for a in self.game.agents]):
             # if joint_action[self.agent] == action:
@@ -70,4 +69,7 @@ class FictitiousPlay(Agent):
     
     def policy(self):
        return self.learned_policy[self.agent]
+    
+    
+
     
