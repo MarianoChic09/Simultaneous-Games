@@ -20,6 +20,20 @@ class FictitiousPlay(Agent):
         self.learned_policy: dict[AgentID, ndarray] = {}
         for agent in game.agents:
             self.learned_policy[agent] = self.count[agent] / np.sum(self.count[agent])
+        
+        # Agrego el calculo de regrets para comparalos con los de RegretMatching
+        self.regret_sum = np.zeros(self.game.num_actions(self.agent))
+        self.instant_regret = np.zeros(self.game.num_actions(self.agent))
+        
+    def calculate_instant_regret(self):
+        utility = self.get_utility()
+        expected_utility = np.dot(self.learned_policy[self.agent], utility)
+        regrets = utility - expected_utility
+        return regrets
+    
+    def update_regrets(self):
+        self.instant_regret = self.calculate_instant_regret()
+        self.regret_sum += self.instant_regret
 
     def get_rewards(self) -> dict:
         g = self.game.clone()
@@ -62,6 +76,8 @@ class FictitiousPlay(Agent):
         for agent in self.game.agents:
             self.count[agent][actions[agent]] += 1
             self.learned_policy[agent] = self.count[agent] / np.sum(self.count[agent])
+        self.update_regrets()
+
 
     def action(self):
         self.update()
